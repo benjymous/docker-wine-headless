@@ -11,8 +11,7 @@ RUN apt-get update \
 		curl \
 		unzip \
 		ca-certificates \
-		xvfb \
-		libgl1-mesa-glx 
+		xvfb
 
 # Install wine and related packages
 RUN dpkg --add-architecture i386 \
@@ -21,6 +20,7 @@ RUN dpkg --add-architecture i386 \
 				wine-stable \
 				winetricks \
 				wine32 \
+				libgl1-mesa-glx:i386 
 		&& rm -rf /var/lib/apt/lists/*
 
 # Use the latest version of winetricks
