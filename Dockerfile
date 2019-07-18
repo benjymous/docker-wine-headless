@@ -15,8 +15,8 @@ RUN apt-get update \
 
 # Install wine and related packages
 RUN dpkg --add-architecture i386 \
-		&& apt-get update \
-		&& apt-get install -y --no-install-recommends \
+		&& apt-get update -qq \
+		&& apt-get install -y -qq \
 				wine-stable \
 				winetricks \
 				wine32 \
