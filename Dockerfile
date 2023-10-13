@@ -1,27 +1,39 @@
-FROM ubuntu:18.04
-MAINTAINER benjymous <benjymous@users.noreply.github.com>
+FROM ubuntu:20.04
 
 # based on https://github.com/suchja/wine
 ENV WINE_MONO_VERSION 0.0.8
 USER root
 
+# Set noninteractive installation
+ARG DEBIAN_FRONTEND=noninteractive
+
+# Set the timezone
+RUN ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime && \
+    apt-get update && \
+    apt-get install -y tzdata && \
+    dpkg-reconfigure --frontend noninteractive tzdata
+
+
 # Install some tools required for creating the image
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends \
-		curl \
-		unzip \
-		ca-certificates \
-		xvfb
+        && apt-get install -y --no-install-recommends \
+                curl \
+                unzip \
+                ca-certificates \
+                xvfb
 
 # Install wine and related packages
 RUN dpkg --add-architecture i386 \
-		&& apt-get update -qq \
-		&& apt-get install -y -qq \
-				wine-stable \
-				winetricks \
-				wine32 \
-				libgl1-mesa-glx:i386 \
-		&& rm -rf /var/lib/apt/lists/*
+                && apt-get update -qq \
+                && apt-get install -y -qq \
+                                wine-stable \
+                                winetricks \
+                                wine32 \
+                                libgl1-mesa-glx:i386 \
+                && rm -rf /var/lib/apt/lists/*
+
+
+### Everything below here is untested with Ubuntu 20.04
 
 # Use the latest version of winetricks
 #RUN curl -SL 'https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks' -o /usr/local/bin/winetricks \
